@@ -1,0 +1,104 @@
+# Settings for ros_control_boilerplate control loop
+arm:
+    # Publish all joint states
+    # Creates the /joint_states topic necessary in ROS
+    joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 50
+        joints:
+          - s1j
+          - s2j
+          - s3j
+          - ej
+          - rollj
+          - pitchj
+          - yawj
+
+    arm_position_controller:
+        type: pos_vel_acc_controllers/JointTrajectoryController
+        joints:
+          - s1j
+          - s2j
+          - s3j
+          - ej
+          - rollj
+          - pitchj
+          - yawj
+        gains:
+          s1j:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          s2j:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          s3j:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          ej:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          rollj:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          pitchj:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+          yawj:
+            p: 100
+            d: 1
+            i: 1
+            i_clamp: 1
+        constraints:
+    #      goal_time: 10.0                  # Override default
+          stopped_velocity_tolerance: 0
+          s1j:
+            goal: 3.14 #0.05 # 3 degree
+            trajectory: 3.14 #0.1 # 6 degree
+          s2j:
+            goal: 3.14 #0.05 # 3 degree
+            trajectory: 3.14 #0.1 # 6 degree
+          s3j:
+            goal: 3.14 #0.05 # 3 degree
+            trajectory: 3.14 #0.1 # 6 degree
+          ej:
+            goal: 3.14 #0.2 # 12 degree
+            trajectory: 3.14 #0.25 # 15 degree
+          rollj:
+            goal: 3.14 #0.1 # 6 degree
+            trajectory: 3.14 #0.1 # 6 degree
+          pitchj:
+            goal: 3.14 #0.1 # 6 degree
+            trajectory: 3.14 #0.1 # 6 degree
+          yawj:
+            goal: 3.14 #0.2 # 12 degree
+            trajectory: 3.14 #0.5 # 30 degree
+
+        state_publish_rate:  50            # Override default
+        action_monitor_rate: 30            # Override default
+        stop_trajectory_duration: 0        # Override default
+
+controller_list:
+  - name: arm/arm_position_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - s1j
+      - s2j
+      - s3j
+      - ej
+      - rollj
+      - pitchj
+      - yawj

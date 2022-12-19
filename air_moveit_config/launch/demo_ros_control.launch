@@ -1,0 +1,17 @@
+<launch>
+
+  <!-- specify the planning pipeline -->
+  <arg name="pipeline" default="ompl" />
+
+  <param name="robot_description" textfile="$(find air_description)/urdf/arm_moveit.urdf" />
+
+  <include file="$(dirname)/ros_controllers.launch"/>
+
+  <include file="$(find air_hardware_interface)/launch/air_hardware_interface.launch"/>
+
+  <include file="$(dirname)/demo.launch" pass_all_args="true">
+    <!-- robot description is loaded by gazebo.launch, to enable Gazebo features -->
+    <arg name="load_robot_description" value="false" />
+    <arg name="moveit_controller_manager" value="ros_control" />
+  </include>
+</launch>
