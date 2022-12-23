@@ -228,8 +228,17 @@
         <axis xyz="-1 0 0" />
         <limit lower="-3.0" upper="3.0" effort="0" velocity="1.75" />
     </joint>
-    <gazebo reference="base_link">
-        <turnGravityOff>true</turnGravityOff>
+
+    <link name="world" />
+    <joint name="world-base_link-fixed" type="fixed">
+        <parent link="world" />
+        <child link="base_link" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <dynamics damping="1.0" />
+    </joint>
+
+    <!--gazebo reference="base_link">
+        <turnGravityOff>false</turnGravityOff>
         <plugin name="gazebo_ros_control">
             <robotNamespace>/</robotNamespace>
         </plugin>
@@ -242,11 +251,11 @@
     </gazebo>
     <gazebo reference="s3">
         <turnGravityOff>true</turnGravityOff>
-    </gazebo>
+    </gazebo-->
     <gazebo reference="e">
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
-    <gazebo reference="roll">
+    <!--gazebo reference="roll">
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
     <gazebo reference="pitch">
@@ -254,81 +263,82 @@
     </gazebo>
     <gazebo reference="yaw">
         <turnGravityOff>true</turnGravityOff>
-    </gazebo>
+    </gazebo-->
+
     <transmission name="trans_s1j">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="s1j">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="s1j_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_s2j">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="s2j">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="s2j_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_s3j">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="s3j">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="s3j_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_ej">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="ej">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="ej_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_rollj">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="rollj">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="rollj_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_pitchj">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="pitchj">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="pitchj_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
     <transmission name="trans_yawj">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="yawj">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="yawj_motor">
-            <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <!--<gazebo>
+    <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
             <robotNamespace>/</robotNamespace>
         </plugin>
-    </gazebo>-->
+    </gazebo>
 </robot>
 

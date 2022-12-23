@@ -1,4 +1,30 @@
 # Publish joint_states
-joint_state_controller:
-  type: joint_state_controller/JointStateController
-  publish_rate: 50
+arm:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  gazebo_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - s1j
+      - s2j
+      - s3j
+      - ej
+      - rollj
+      - pitchj
+      - yawj
+
+controller_list:
+    - name: gazebo_controller
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      default: true
+      joints:
+        - s1j
+        - s2j
+        - s3j
+        - ej
+        - rollj
+        - pitchj
+        - yawj
