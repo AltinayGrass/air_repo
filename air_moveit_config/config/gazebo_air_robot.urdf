@@ -251,11 +251,11 @@
     </gazebo>
     <gazebo reference="s3">
         <turnGravityOff>true</turnGravityOff>
-    </gazebo-->
+    </gazebo>
     <gazebo reference="e">
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
-    <!--gazebo reference="roll">
+    <gazebo reference="roll">
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
     <gazebo reference="pitch">
