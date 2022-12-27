@@ -5,9 +5,9 @@
 
   <param name="robot_description" textfile="$(find air_description)/urdf/arm_moveit.urdf" />
 
-  <include file="$(dirname)/ros_controllers.launch"/>
-
-  <include file="$(find air_hardware_interface)/launch/air_hardware_interface.launch"/>
+  <include file="$(dirname)/ros_controllers.launch">
+      <arg name="hw" default="real"/>
+  </include>
 
   <include file="$(dirname)/demo.launch" pass_all_args="true">
     <!-- robot description is loaded by gazebo.launch, to enable Gazebo features -->

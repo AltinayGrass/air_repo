@@ -3,38 +3,3 @@ arm:
   joint_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 50
-
-  gazebo_controller:
-    type: position_controllers/JointTrajectoryController
-    joints:
-      - s1j
-      - s2j
-      - s3j
-      - ej
-      - rollj
-      - pitchj
-      - yawj
-# gazebo_ros_control:  
-#   pid_gains:
-#       s1j: {p: 10000.0, i: 0.01,  d: 10.0}
-#       s2j: {p: 10000.0, i: 0.01,  d: 10.0}
-#       s3j: {p: 10000.0, i: 0.01,  d: 10.0}
-#       ej: {p: 10000.0, i: 0.01,  d: 10.0}
-#       rollj: {p: 10000.0, i: 0.01,  d: 10.0}
-#       pitchj: {p: 10000.0, i: 0.01,  d: 10.0}
-#       yawj: {p: 10000.0, i: 0.01,  d: 10.0}
-
-
-controller_list:
-    - name: gazebo_controller
-      action_ns: follow_joint_trajectory
-      type: FollowJointTrajectory
-      default: true
-      joints:
-        - s1j
-        - s2j
-        - s3j
-        - ej
-        - rollj
-        - pitchj
-        - yawj

@@ -1,12 +1,26 @@
 <?xml version="1.0"?>
 <launch>
+  <!-- specify fake or real hardware -->
+  <arg name="hw" default="fake" />
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find air_moveit_config)/config/ros_controllers.yaml" command="load"/>
-
+ 
+  <group if="$(eval arg('hw') == 'fake')"> 
   <!-- Load the controllers -->
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-    output="screen" args="arm/joint_state_controller
+     <node name="controller_spawner" pkg="controller_manager" type="controller_manager" respawn="false"
+         output="screen" args="spawn arm/pos_controller"/>
+  <!-- load other controllers for servo control -->
+     <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load arm/joint_group_position_controller" />
+  </group>
+
+  <group if="$(eval arg('hw') == 'real')"> 
+    <!-- Load the controllers -->
+      <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" args="arm/joint_state_controller
                           arm/arm_position_controller"/>
+      <include file="$(find air_hardware_interface)/launch/air_hardware_interface.launch"/>
+
+    </group>
 
 </launch>

@@ -9,6 +9,7 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" default="worlds/empty.world"/>
     <arg name="paused" value="true"/>
+    <arg name="verbose" value="true"/>
     <arg name="gui" value="$(arg gazebo_gui)"/>
   </include>
 
@@ -25,15 +26,14 @@
   <!-- Load joint controller parameters for Gazebo -->
   <rosparam file="$(find air_moveit_config)/config/gazebo_controllers.yaml"/>
   <!-- Spawn Gazebo ROS controllers -->
-  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm/gazebo_controller" />
+  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="arm/joint_state_controller" />
+  
   <!-- Load ROS controllers -->
-  <include file="$(dirname)/ros_controllers.launch"/>
-
-  <include file="$(find air_hardware_interface)/launch/air_hardware_interface.launch"/>
-
-  <!--node name="joint_state_desired_publisher" pkg="topic_tools" type="relay" args="joint_states joint_states_desired" /-->
+  <include file="$(dirname)/ros_controllers.launch">
+    <arg name="hw" default="fake"/>
+  </include>
 
   <!-- Given the published joint states, publish tf for the robot links -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" args="-publish_frequency 10.0"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" args="-publish_frequency 50.0"/>
 
 </launch>

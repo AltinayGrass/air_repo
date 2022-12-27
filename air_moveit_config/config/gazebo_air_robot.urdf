@@ -52,7 +52,7 @@
         <parent link="base_link" />
         <child link="s1" />
         <axis xyz="0 0 1" />
-        <limit lower="-0.78" upper="0.78" effort="0" velocity="0.35" />
+        <limit lower="-0.78" upper="0.78" effort="2.76" velocity="3.39" />
     </joint>
     <link name="s2">
         <inertial>
@@ -81,7 +81,7 @@
         <parent link="s1" />
         <child link="s2" />
         <axis xyz="-1 0 0" />
-        <limit lower="0" upper="1.57" effort="0" velocity="0.35" />
+        <limit lower="0" upper="1.57" effort="2.76" velocity="3.39" />
     </joint>
     <link name="s3">
         <inertial>
@@ -110,7 +110,7 @@
         <parent link="s2" />
         <child link="s3" />
         <axis xyz="0 -1 0" />
-        <limit lower="-1.57" upper="1.57" effort="0" velocity="0.35" />
+        <limit lower="-1.57" upper="1.57" effort="2.76" velocity="3.39" />
     </joint>
     <link name="e">
         <inertial>
@@ -139,7 +139,7 @@
         <parent link="s3" />
         <child link="e" />
         <axis xyz="0 0 1" />
-        <limit lower="-1.4" upper="0.184" effort="0" velocity="0.13" />
+        <limit lower="-1.4" upper="0.184" effort="2.76" velocity="3.39" />
     </joint>
     <link name="roll">
         <inertial>
@@ -168,7 +168,7 @@
         <parent link="e" />
         <child link="roll" />
         <axis xyz="0 0.70711 0.70711" />
-        <limit lower="-0.26" upper="0.26" effort="0" velocity="0.09" />
+        <limit lower="-0.26" upper="0.26" effort="2.76" velocity="3.39" />
     </joint>
     <link name="pitch">
         <inertial>
@@ -197,7 +197,7 @@
         <parent link="roll" />
         <child link="pitch" />
         <axis xyz="0 0.70711 -0.70711" />
-        <limit lower="-0.26" upper="0.26" effort="0" velocity="0.09" />
+        <limit lower="-0.26" upper="0.26" effort="2.76" velocity="3.39" />
     </joint>
     <link name="yaw">
         <inertial>
@@ -226,7 +226,7 @@
         <parent link="pitch" />
         <child link="yaw" />
         <axis xyz="-1 0 0" />
-        <limit lower="-3.0" upper="3.0" effort="0" velocity="1.75" />
+        <limit lower="-3.0" upper="3.0" effort="2.76" velocity="3.39" />
     </joint>
 
     <link name="world" />
