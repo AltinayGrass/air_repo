@@ -74,9 +74,9 @@ namespace air
         std::vector<std::string> m_JointNames;
         std::vector<double> m_JointPositions;
 
-        AmsNetId m_RemoteNetID {192, 168, 6, 29, 1, 1};
+        AmsNetId m_RemoteNetID  {41, 118, 185 , 65 ,1 ,1}; //{192, 168, 6, 29, 1, 1};
 
-        const std::string m_RemoteIpV4 = "192.168.6.29";
+        const std::string m_RemoteIpV4 =  "192.168.225.129"; //"192.168.6.29";
 
         AdsDevice* m_Route;
 

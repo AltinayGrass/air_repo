@@ -115,53 +115,58 @@ namespace air
         return roll_pitch_vel_in_mm;
     }
 
-    double RightArmIK::elbowLinearToRadianPosition(double position_in_mm)
+    double RightArmIK::elbowLinearToRadianPosition(double pos_in_mm)
     {
-            double x = position_in_mm;
-            double p1 = 3.392e-8;
-            double p2 = -7.62e-6;
-            double p3 = 0.0007375;
-            double p4 = -0.03685;
-            double p5 = 2.063;
-            double p6 = 13.11;
-            double degree_pos = p1*pow(x,5) + p2*pow(x,4) + p3*pow(x,3) + p4*pow(x,2) + p5*x + p6;
-            // To solve URDF Beckhoff mismatch
-            double beckhoff_urdf_error = 90.0; // 90 degree disparity
-            degree_pos -= beckhoff_urdf_error;
-            return toRadian(degree_pos);
+        double x = pos_in_mm;
+        double p1 = 1.905e-8;
+        double p2 = -4.209e-6;
+        double p3 = 0.0004141;
+        double p4 = -0.02113;
+        double p5 = 1.572;
+        double p6 = 9.992;
+        double degree_pos = p1*pow(x,5) + p2*pow(x,4) + p3*pow(x,3) + p4*pow(x,2) + p5*x + p6;
+        // To solve URDF Beckhoff mismatch
+        double beckhoff_urdf_error = 90.0; // 90 degree disparity
+        degree_pos -= beckhoff_urdf_error;
+        return toRadian(degree_pos);
     }
 
-    double RightArmIK::elbowLinearToRadianVelocity(double velocity_in_mm)
+    double RightArmIK::elbowLinearToRadianVelocity(double vel_in_mm)
     {
-        double elbow_coeff = 1.3;
-
-        return velocity_in_mm * elbow_coeff;
+        double x = vel_in_mm;
+        double p1 = 1.905e-8;
+        double p2 = -4.209e-6;
+        double p3 = 0.0004141;
+        double p4 = -0.02113;
+        double p5 = 1.572;
+        double vel_in_degree = 5*p1*pow(x,4) + 4*p2*pow(x,3) + 3*p3*pow(x,2) + 2*p4*x + p5;
+        return vel_in_degree;
     }
 
-    double RightArmIK::elbowRadianToLinearPosition(double position_in_radian)
+    double RightArmIK::elbowRadianToLinearPosition(double pos_in_rad)
     {
         double o1 = 28;
-        double o2 = 33;
+        double o2 = 39;
         double y = 226;
-        double r = 50;
+        double r = 55;
 
-        double Lx = r*std::cos(toRadian(107) + position_in_radian) + o2;
-        double Ly = y - r*std::sin(toRadian(107) + position_in_radian);
-        double mm_distance = sqrt(pow(Lx,2) + pow(Ly,2) - pow(o1,2)) - 180.4;
+        double Lx = r*cos(toRadian(120) + pos_in_rad) + o2;
+        double Ly = y - r*sin(toRadian(120) + pos_in_rad);
+        double mm_distance = sqrt(pow(Lx,2) + pow(Ly,2) - pow(o1,2)) - 181.79;
         return mm_distance;
     }
 
-    double RightArmIK::elbowRadianToLinearVelocity(double position_in_radian, double velocity_in_radian)
+    double RightArmIK::elbowRadianToLinearVelocity(double pos_in_rad, double vel_in_rad)
     {
         double o1 = 28;
-        double o2 = 33;
+        double o2 = 39;
         double y = 226;
-        double r = 50;
+        double r = 55;
 
-        double Lx = r*std::cos(toRadian(107) + position_in_radian) + o2;
-        double Lx_dot = -r*std::sin(toRadian(107) + position_in_radian)*velocity_in_radian;
-        double Ly = y - r*std::sin(toRadian(107) + position_in_radian);
-        double Ly_dot = -r*std::cos(toRadian(107) + position_in_radian)*velocity_in_radian;
+        double Lx = r*cos(toRadian(120) + pos_in_rad) + o2;
+        double Lx_dot = -r*sin(toRadian(120) + pos_in_rad)*vel_in_rad;
+        double Ly = y - r*sin(toRadian(120) + pos_in_rad);
+        double Ly_dot = -r*cos(toRadian(120) + pos_in_rad)*vel_in_rad;
 
         double numerator = Lx*Lx_dot + Ly*Ly_dot;
         double denominator = sqrt(pow(Lx,2) + pow(Ly,2) - pow(o1,2));
