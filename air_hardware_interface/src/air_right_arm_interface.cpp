@@ -265,10 +265,16 @@ namespace air
 
             AdsVariable<std::array<double, 7>> adsPosVar{*m_Route, "GVL.fGoalPos_Arm"};
             AdsVariable<std::array<double, 7>> adsVelVar{*m_Route, "GVL.fGoalVel_Arm"};
-
+            AdsVariable<std::array<double, 7>> adsAccVar{*m_Route, "GVL.fGoalAcc_Arm"};
+            
             std::array<double, 7> posToWrite;
             std::array<double, 7> velToWrite;
-
+            std::array<double, 7> accToWrite;
+            
+            for(int i =0; i<7;i++)
+            {
+                accToWrite[i]=acc.at(i);
+            }
             // s1, s2, s3
             for(int i = 0; i < 3; i++)
             {
@@ -310,6 +316,7 @@ namespace air
 
             adsPosVar = posToWrite;
             adsVelVar = velToWrite;
+            adsAccVar = accToWrite;
 
         } catch(const AdsException& ex){
             

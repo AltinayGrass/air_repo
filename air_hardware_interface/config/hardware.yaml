@@ -1,6 +1,6 @@
 arm:
   hardware_interface:
-    loop_hz: 10
+    loop_hz: 50
     joints:
       - s1j
       - s2j
