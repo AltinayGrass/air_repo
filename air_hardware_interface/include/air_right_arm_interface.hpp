@@ -29,7 +29,7 @@ namespace air
         static double toDegree(double radian);
 
         double elbowRadianToLinearPosition(double position_in_radian);
-        double elbowRadianToLinearVelocity(double position_in_radian, double velocity_in_radian);
+        double elbowRadianToLinearVelocity(double velocity_in_radian);
         double elbowLinearToRadianPosition(double position_in_mm);
         double elbowLinearToRadianVelocity(double velocity_in_mm);
 
@@ -74,9 +74,13 @@ namespace air
         std::vector<std::string> m_JointNames;
         std::vector<double> m_JointPositions;
 
-        AmsNetId m_RemoteNetID  {172, 18, 212, 67, 1, 1};//{41, 118, 185 , 65 ,1 ,1}; //{192, 168, 6, 29, 1, 1};
+        AmsNetId m_RemoteNetID  {41, 118, 185 , 65 ,1 ,1}; //TcBSD
 
-        const std::string m_RemoteIpV4 =  "169.254.186.54";//"192.168.225.129"; //"192.168.6.29";
+                //{172, 18, 212, 67, 1, 1}; {41, 118, 185 , 65 ,1 ,1}; {192, 168, 6, 29, 1, 1};
+
+        const std::string m_RemoteIpV4 =  "192.168.225.129"; //TcBSD
+                
+                //"169.254.186.54"; "192.168.225.129"; "192.168.6.29";
 
         AdsDevice* m_Route;
 
