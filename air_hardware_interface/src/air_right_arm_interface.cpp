@@ -117,43 +117,43 @@ namespace air
 
     double RightArmIK::elbowLinearToRadianPosition(double pos_in_mm)
     {
-        double m=pos_in_mm;
-        double D=150.57;
-        double L=180.50;
-        double o1=28.0;
-        double o2=33.0;
-        double r=54.95;
-        double h=226.0;
-        double h1=sqrt(h*h+o2*o2);
-        double Ly=sqrt(o1*o1+(m+L)*(m+L));
-        double A=acos((r*r+h1*h1-Ly*Ly)/(2.0*r*h1));
-        double B=-360.0+90.0+D+toDegree(A+std::atan2(o2,h));
-        return toRadian(B);
+        double m    =pos_in_mm;
+        double D    =150.57;
+        double L    =180.50;
+        double o1   =28.0;
+        double o2   =33.0;
+        double r    =54.95;
+        double h    =226.0;
+        double h1   {std::sqrt(h*h+o2*o2)};
+        double Ly   {std::sqrt(o1*o1+(m+L)*(m+L))};
+        double A    {std::acos((r*r+h1*h1-Ly*Ly)/(2.0*r*h1))};
+        double B    {-360.0+90.0+D+toDegree(A+std::atan2(o2,h))};
+        return      toRadian(B);
     }
 
     double RightArmIK::elbowLinearToRadianVelocity( double vel_in_mm)
     {
-        double r=54.95;
-        return vel_in_mm/r;
+        double r    {54.95};
+        return      vel_in_mm/r;
     }
 
     double RightArmIK::elbowRadianToLinearPosition(double pos_in_rad)
     {
-        double D=150.57;
-        double L=180.50;
-        double o1=28.0;
-        double o2=33.0;
-        double r=54.95;
-        double h=226.0;
-        double h1=sqrt(h*h+o2*o2);
-        double A=pos_in_rad+2*M_PI-M_PI/2-toRadian(D)-std::atan2(o2,h);
-        return sqrt((r*r+h1*h1-2.0*r*h1*cos(A))-(o1*o1))-L;
+        double D    =150.57;
+        double L    =180.50;
+        double o1   =28.0;
+        double o2   =33.0;
+        double r    =54.95;
+        double h    =226.0;
+        double h1   {std::sqrt(h*h+o2*o2)};
+        double A    {pos_in_rad+2.0*M_PI-M_PI/2.0-toRadian(D)-std::atan2(o2,h)};
+        return      sqrt((r*r+h1*h1-2.0*r*h1*cos(A))-(o1*o1))-L;
     }
 
     double RightArmIK::elbowRadianToLinearVelocity(double vel_in_rad)
     {
-        double r=54.95;
-        return r*vel_in_rad;
+        double r    {54.95};
+        return      r*vel_in_rad;
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------
