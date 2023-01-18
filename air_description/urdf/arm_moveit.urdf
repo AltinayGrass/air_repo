@@ -4,8 +4,7 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot name="air_robot">
     <link name="base_link">
-
-<inertial>
+        <inertial>
             <origin xyz="0.000160852559340272 0.416511988266863 0.00522519390962018" rpy="0 0 0" />
             <mass value="6.60658072927865" />
             <inertia ixx="0.205461268695088" ixy="-4.8631130134879E-08" ixz="3.31309244336347E-09" iyy="0.0632251395598791" iyz="-4.46121098307276E-09" izz="0.213924141252687" />
@@ -28,8 +27,7 @@
         </collision>
     </link>
     <link name="s1">
-
-<inertial>
+        <inertial>
             <origin xyz="-0.0565855661773653 -1.47432999124675E-05 0.0503451976338493" rpy="0 0 0" />
             <mass value="0.542684124579144" />
             <inertia ixx="0.000345761092952399" ixy="-3.24050500600486E-07" ixz="1.50683178516403E-07" iyy="0.000778022471193682" iyz="1.07326375799424E-08" izz="0.000776671252305068" />
@@ -59,8 +57,7 @@
         <limit lower="-0.78" upper="0.78" effort="0" velocity="0.35" />
     </joint>
     <link name="s2">
-
-<inertial>
+        <inertial>
             <origin xyz="0.0265368019978267 -0.0360762146328593 0.00202591662662588" rpy="0 0 0" />
             <mass value="0.0397003268136184" />
             <inertia ixx="1.77539568949169E-05" ixy="-5.49265597337707E-08" ixz="4.46961963342789E-21" iyy="9.62749691816005E-06" iyz="5.5659379414233E-21" izz="1.53865784423673E-05" />
@@ -90,8 +87,7 @@
         <limit lower="0" upper="1.57" effort="0" velocity="0.35" />
     </joint>
     <link name="s3">
-
-<inertial>
+        <inertial>
             <origin xyz="-0.0307852686146159 -0.106762715233885 -0.00285680761161178" rpy="0 0 0" />
             <mass value="0.69346525440976" />
             <inertia ixx="0.000632226154715784" ixy="3.3846916742775E-06" ixz="-2.03216958615076E-06" iyy="0.000203793561582271" iyz="-7.69131798756883E-08" izz="0.000626858789980171" />
@@ -121,8 +117,7 @@
         <limit lower="-1.57" upper="1.57" effort="0" velocity="0.35" />
     </joint>
     <link name="e">
-
-<inertial>
+        <inertial>
             <origin xyz="0.133914313079551 0.0397090138567681 -0.00135370354868536" rpy="0 0 0" />
             <mass value="0.524484949455585" />
             <inertia ixx="0.000164098535625993" ixy="-0.00011555456704967" ixz="-1.49937999308697E-06" iyy="0.000491486729879123" iyz="5.4210279008361E-06" izz="0.000537801635705856" />
@@ -152,8 +147,7 @@
         <limit lower="-1.4" upper="0.184" effort="0" velocity="0.13" />
     </joint>
     <link name="roll">
-
-<inertial>
+        <inertial>
             <origin xyz="2.11649564541005E-08 2.17253527112771E-08 -5.72361158468482E-10" rpy="0 0 0" />
             <mass value="0.0123350072540482" />
             <inertia ixx="5.73140316108075E-06" ixy="2.39610064059149E-12" ixz="2.37221429275288E-12" iyy="3.0133459248538E-06" iyz="-2.51281711383088E-12" izz="3.01335111374677E-06" />
@@ -183,8 +177,7 @@
         <limit lower="-0.26" upper="0.26" effort="0" velocity="0.09" />
     </joint>
     <link name="pitch">
-
-<inertial>
+        <inertial>
             <origin xyz="0.0286089165171641 -0.000144661566694015 0.009855465038871" rpy="0 0 0" />
             <mass value="0.0576090249075869" />
             <inertia ixx="7.09168260696957E-05" ixy="-9.04854271559607E-09" ixz="-9.02484498992207E-09" iyy="3.68466285330398E-05" iyz="-3.7654782496613E-07" izz="3.68466243102646E-05" />
@@ -214,8 +207,7 @@
         <limit lower="-0.26" upper="0.26" effort="0" velocity="0.09" />
     </joint>
     <link name="yaw">
-
-<inertial>
+        <inertial>
             <origin xyz="0.121145515511824 -0.00274393412138674 -0.00280619674961233" rpy="0 0 0" />
             <mass value="0.288045639627102" />
             <inertia ixx="0.000166764800385917" ixy="1.15318815602555E-05" ixz="-2.72502292894343E-07" iyy="0.000292613552431781" iyz="3.6036191451638E-08" izz="0.000214965635544534" />
@@ -269,7 +261,7 @@
         <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-<transmission name="trans_s1j">
+    <transmission name="trans_s1j">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="s1j">
             <hardwareInterface>hardware_interface/PosVelAccJointInterface</hardwareInterface>

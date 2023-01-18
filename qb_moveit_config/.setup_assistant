@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: air_description
+    relative_path: urdf/qbhand.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/air_robot.srdf
+  CONFIG:
+    author_name: aGan
+    author_email: agan.simsek@altinay.com
+    generated_timestamp: 1674035690
