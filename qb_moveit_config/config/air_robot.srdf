@@ -373,6 +373,11 @@
     <disable_collisions link1="qbhand_thumb_proximal_link" link2="s1" reason="Never"/>
     <disable_collisions link1="qbhand_thumb_proximal_link" link2="s2" reason="Never"/>
     <disable_collisions link1="qbhand_thumb_proximal_link" link2="s3" reason="Never"/>
+    <!-- added for more close-->
+    <disable_collisions link1="qbhand_thumb_distal_link" link2="qbhand_index_distal_link" reason="Never"/>
+    <disable_collisions link1="qbhand_thumb_distal_link" link2="qbhand_palm_link" reason="Never"/>
+    <disable_collisions link1="qbhand_thumb_distal_link" link2="qbhand_middle_distal_link" reason="Never"/>
+    <!---->
     <disable_collisions link1="roll" link2="s1" reason="Never"/>
     <disable_collisions link1="roll" link2="s2" reason="Never"/>
     <disable_collisions link1="roll" link2="s3" reason="Never"/>
