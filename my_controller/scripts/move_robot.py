@@ -54,8 +54,8 @@ def move_robot(distance, max_speed, acceleration):
             rate.sleep()
             time += (1.0 / hz)
             current_distance += dir * cmd.linear.x * (1.0 / hz)
-            current_speed = dir * cmd.linear.x
-            #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {dir * cmd['linear.x']:.2f}m/s")
+            current_speed = cmd.linear.x
+            #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
 
     cmd.linear.x = 0.0
     #print("Robot stopped.")
