@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from geometry_msgs.msg import Twist
+import geometry_msgs.msg
 import math
 import tf
 from tf.transformations import euler_from_quaternion
@@ -27,11 +27,11 @@ def move_robot(distance, max_speed, acceleration):
 
     rospy.init_node('my_robot_controller', anonymous=True)
     sub = tf.TransformListener()
-    pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', Twist, queue_size=10)
+    pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=1)
     hz=10
     rate = rospy.Rate(hz)  # 10 Hz
     
-    cmd = Twist()
+    cmd = geometry_msgs.msg.Twist()
     cmd.linear.x = 0.0
     cmd.angular.z = 0.0
     
@@ -61,8 +61,10 @@ def move_robot(distance, max_speed, acceleration):
     time = 0.0
     current_distance = 0.0
     current_speed = 0.0
-    pid_th = PID (Kp=-2.0, Ki=-0.02 , Kd=-0.5)
-    yaw_setpoint=0.0
+    pid_th = PID (Kp=2.0, Ki =0.02 , Kd=0.5)
+    pid_pos = PID (Kp=2.0, Ki = 0.2 , Kd=0.0)
+    
+    init=0
 
     while (time < acc_and_constant_speed_time + acceleration_time):
             if time<acc_and_constant_speed_time:
@@ -75,17 +77,26 @@ def move_robot(distance, max_speed, acceleration):
             rate.sleep()
             time += (1.0 / hz)
             current_distance += dir * cmd.linear.x * (1.0 / hz)
-            current_speed = cmd.linear.x
             #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
             try:
-                (trans,rot) = sub.lookupTransform('/base_footprint','/odom',rospy.Time(0))
+                (trans, rot) = sub.lookupTransform('/base_footprint','/odom',rospy.Time(0))
             except (tf.LookupException,tf.ConnectivityException,tf.ExtrapolationException):
+                rate.sleep()
                 continue
-            (roll, pitch, yaw) = euler_from_quaternion(rot)
-            error=yaw_setpoint-yaw
-            control_signal = pid_th.update(error,(1.0 / hz))
-            cmd.angular.z += control_signal * (1.0 / hz)
-            print( yaw, error, cmd.angular.z)
+            if init==0:
+                init=1
+                sx=trans[0]
+                sy=trans[1]
+                (roll, pitch, yaw_setpoint) = euler_from_quaternion (rot)
+            (roll, pitch, yaw) =  euler_from_quaternion(rot)
+            error_th=yaw-yaw_setpoint
+            control_th = pid_th.update(error_th,(1.0 / hz))
+            cmd.angular.z += control_th * (1.0 / hz)
+            dist=math.sqrt((trans[0]-sx)*(trans[0]-sx)+(trans[1]-sy)*(trans[1]-sy))
+            error_pos=abs(current_distance)-dist
+            control_pos = pid_pos.update(error_pos,(1.0 / hz))
+            current_speed = cmd.linear.x # + control_pos
+            print( dist,error_pos,control_pos,current_speed)
     cmd.linear.x = 0.0
     #print("Robot stopped.")
 
