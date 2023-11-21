@@ -5,19 +5,25 @@ import geometry_msgs.msg
 import math
 import tf
 from tf.transformations import euler_from_quaternion
-import sys
+import sys,getopt
 
 class PID:
-    def __init__(self, Kp, Ki, Kd):
+    def __init__(self, Kp, Ki, Kd, Imax, Imin):
         self.Kp = Kp
         self.Ki = Ki
         self.Kd = Kd
+        self.Imax= Imax
+        self.Imin= Imin
         self.last_error = 0
         self.integral = 0
 
     def update(self, error, dt):
         derivative = (error - self.last_error) / dt
         self.integral += error * dt
+        if self.integral > self.Imax:
+            self.integral=self.Imax
+        if self.integral < self.Imin:
+            self.integral=self.Imin
         output = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
         self.last_error = error
         return output
@@ -28,7 +34,7 @@ def move_robot(distance, max_speed, acceleration):
     rospy.init_node('my_robot_controller', anonymous=True)
     sub = tf.TransformListener()
     pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=1)
-    hz=10
+    hz=100
     rate = rospy.Rate(hz)  # 10 Hz
     
     cmd = geometry_msgs.msg.Twist()
@@ -61,8 +67,8 @@ def move_robot(distance, max_speed, acceleration):
     time = 0.0
     current_distance = 0.0
     current_speed = 0.0
-    pid_th = PID (Kp=2.0, Ki =0.02 , Kd=0.5)
-    pid_pos = PID (Kp=2.0, Ki = 0.2 , Kd=0.0)
+    pid_th = PID (Kp=2.0, Ki =0.02 , Kd=0.5 , Imax=0.3 , Imin=-0.3)
+    pid_pos = PID (Kp=0.045, Ki = 0.01 , Kd=0.0 ,Imax=0.3 , Imin=-0.3)
     
     init=0
 
@@ -73,10 +79,6 @@ def move_robot(distance, max_speed, acceleration):
             else:
                 current_speed -= dir * acceleration * (1.0 / hz)
                 cmd.linear.x = dir * max(0.0, abs(current_speed))                 
-            pub.publish(cmd)
-            rate.sleep()
-            time += (1.0 / hz)
-            current_distance += dir * cmd.linear.x * (1.0 / hz)
             #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
             try:
                 (trans, rot) = sub.lookupTransform('/base_footprint','/odom',rospy.Time(0))
@@ -95,17 +97,41 @@ def move_robot(distance, max_speed, acceleration):
             dist=math.sqrt((trans[0]-sx)*(trans[0]-sx)+(trans[1]-sy)*(trans[1]-sy))
             error_pos=abs(current_distance)-dist
             control_pos = pid_pos.update(error_pos,(1.0 / hz))
-            current_speed = cmd.linear.x # + control_pos
+            current_speed = cmd.linear.x + (dir * control_pos) * ctrl
             print( dist,error_pos,control_pos,current_speed)
+            pub.publish(cmd)
+            current_distance += dir * cmd.linear.x * (1.0 / hz)
+            rate.sleep()
+            time += (1.0 / hz)
     cmd.linear.x = 0.0
     #print("Robot stopped.")
 
+distance = 0.0
+ctrl = 0.0
+
+def main(argv):
+    global distance
+    global ctrl
+    try:
+        opts, args = getopt.getopt(argv,"hd:c:",["distance=","control="])
+    except getopt.GetoptError:
+        print ('-d <in m> -c <on/off>')
+        sys.exit(2)
+    for opt,arg in opts:
+        if opt == '-h':
+            print ('-d <in m> -c <on/off>')
+            sys.exit()
+        elif opt in ("-d","--distance"):
+            distance = float(arg)
+        elif opt in ("-c", "--control"):
+            if arg=='on':
+                ctrl = 1.0
+            else:
+                ctrl = 0.0
+        
 if __name__ == '__main__':
     try:
-        if sys.argv[1]:
-            distance = float(sys.argv[1])
-        else:
-            distance = -0.5  # Hedef mesafe (0.8 metre, negatif)
+        main(sys.argv[1:])
         max_speed = 0.3  # Maksimum hız (pozitif)
         acceleration = 0.6  # Hızlanma (eşit ivme)
         move_robot(distance, max_speed, acceleration)
