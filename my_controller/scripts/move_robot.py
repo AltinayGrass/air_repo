@@ -8,7 +8,7 @@ from tf.transformations import euler_from_quaternion
 import sys,getopt
 
 class PID:
-    def __init__(self, Kp, Ki, Kd, Imax, Imin):
+    def __init__(self, Kp, Ki, Kd, Imax=sys.float_info.max, Imin=sys.float_info.min):
         self.Kp = Kp
         self.Ki = Ki
         self.Kd = Kd
@@ -33,7 +33,7 @@ def move_robot(distance, max_speed, acceleration):
 
     rospy.init_node('my_robot_controller', anonymous=True)
     sub = tf.TransformListener()
-    pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=1)
+    pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
     hz=100
     rate = rospy.Rate(hz)  # 10 Hz
     
@@ -67,19 +67,12 @@ def move_robot(distance, max_speed, acceleration):
     time = 0.0
     current_distance = 0.0
     current_speed = 0.0
-    pid_th = PID (Kp=2.0, Ki =0.02 , Kd=0.5 , Imax=0.3 , Imin=-0.3)
-    pid_pos = PID (Kp=0.045, Ki = 0.01 , Kd=0.0 ,Imax=0.3 , Imin=-0.3)
+    pid_th = PID (Kp = 2.0, Ki = 0.02 , Kd = 0.5)
+    pid_pos = PID (Kp = 0.1, Ki = 0.01 , Kd = 0.0)
     
     init=0
 
     while (time < acc_and_constant_speed_time + acceleration_time):
-            if time<acc_and_constant_speed_time:
-                current_speed += dir * acceleration * (1.0 / hz) 
-                cmd.linear.x = dir * min(abs(target_speed),abs(current_speed))                 
-            else:
-                current_speed -= dir * acceleration * (1.0 / hz)
-                cmd.linear.x = dir * max(0.0, abs(current_speed))                 
-            #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
             try:
                 (trans, rot) = sub.lookupTransform('/base_footprint','/odom',rospy.Time(0))
             except (tf.LookupException,tf.ConnectivityException,tf.ExtrapolationException):
@@ -97,12 +90,22 @@ def move_robot(distance, max_speed, acceleration):
             dist=math.sqrt((trans[0]-sx)*(trans[0]-sx)+(trans[1]-sy)*(trans[1]-sy))
             error_pos=abs(current_distance)-dist
             control_pos = pid_pos.update(error_pos,(1.0 / hz))
-            current_speed = cmd.linear.x + (dir * control_pos) * ctrl
+
+            if time<acc_and_constant_speed_time:
+                current_speed += dir * acceleration * (1.0 / hz)
+                current_speed -= (control_pos * ctrl ) 
+                cmd.linear.x = dir * min(abs(target_speed),abs(current_speed))                 
+            else:
+                current_speed -= dir * acceleration * (1.0 / hz)
+                current_speed += (control_pos * ctrl )                
+                cmd.linear.x = dir * max(0.0, abs(current_speed))                 
+            #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
+            current_speed = cmd.linear.x
             print( dist,error_pos,control_pos,current_speed)
             pub.publish(cmd)
             current_distance += dir * cmd.linear.x * (1.0 / hz)
-            rate.sleep()
             time += (1.0 / hz)
+            rate.sleep()
     cmd.linear.x = 0.0
     #print("Robot stopped.")
 
