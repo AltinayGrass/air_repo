@@ -92,13 +92,11 @@ def move_robot(distance, max_speed, acceleration):
             control_pos = pid_pos.update(error_pos,(1.0 / hz))
 
             if time<acc_and_constant_speed_time:
-                current_speed += dir * acceleration * (1.0 / hz)
-                current_speed += (control_pos * ctrl ) 
-                cmd.linear.x = dir * min(abs(target_speed),abs(current_speed))                 
+                current_speed += dir * acceleration * (1.0 / hz)               
             else:
                 current_speed -= dir * acceleration * (1.0 / hz)
-                current_speed += (control_pos * ctrl )                
-                cmd.linear.x = dir * min(abs(target_speed), abs(current_speed))                 
+            current_speed += (control_pos * ctrl )                
+            cmd.linear.x = dir * min(abs(target_speed), abs(current_speed))                 
             #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
             current_speed = cmd.linear.x
             print( dist,error_pos,control_pos,current_speed)
