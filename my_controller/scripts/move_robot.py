@@ -68,7 +68,7 @@ def move_robot(distance, max_speed, acceleration):
     current_distance = 0.0
     current_speed = 0.0
     pid_th = PID (Kp = 2.0, Ki = 0.02 , Kd = 0.5)
-    pid_pos = PID (Kp = 0.1, Ki = 0.01 , Kd = 0.0)
+    pid_pos = PID (Kp = 0.04, Ki = 0.01 , Kd = 0.02)
     
     init=0
 
@@ -93,17 +93,17 @@ def move_robot(distance, max_speed, acceleration):
 
             if time<acc_and_constant_speed_time:
                 current_speed += dir * acceleration * (1.0 / hz)
-                current_speed -= (control_pos * ctrl ) 
+                current_speed += (control_pos * ctrl ) 
                 cmd.linear.x = dir * min(abs(target_speed),abs(current_speed))                 
             else:
                 current_speed -= dir * acceleration * (1.0 / hz)
                 current_speed += (control_pos * ctrl )                
-                cmd.linear.x = dir * max(0.0, abs(current_speed))                 
+                cmd.linear.x = dir * min(abs(target_speed), abs(current_speed))                 
             #print(f"Time: {time:.2f}s, Distance: {current_distance:.2f}m, Speed: {current_speed:.2f}m/s")
             current_speed = cmd.linear.x
             print( dist,error_pos,control_pos,current_speed)
             pub.publish(cmd)
-            current_distance += dir * cmd.linear.x * (1.0 / hz)
+            current_distance += cmd.linear.x * (1.0 / hz)
             time += (1.0 / hz)
             rate.sleep()
     cmd.linear.x = 0.0
