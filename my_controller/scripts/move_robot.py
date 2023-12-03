@@ -203,11 +203,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hd:t:c:",["distance=","theta=","control="])
     except getopt.GetoptError:
-        print ('-d <in m> -c <on/off>')
+        print ('-d <in m> -t <in rad> -c <on/off>')
         sys.exit(2)
     for opt,arg in opts:
         if opt == '-h':
-            print ('-d <in m> -c <on/off>')
+            print ('-d <in m> -t <in rad> -c <on/off>')
             sys.exit()
         elif opt in ("-d","--distance"):
             distance = float(arg)
