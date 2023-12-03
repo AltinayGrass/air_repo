@@ -6,6 +6,7 @@ import math
 import tf
 from tf.transformations import euler_from_quaternion
 import sys,getopt
+from angles import shortest_angular_distance
 
 distance = 0.0
 theta = 0.0
@@ -155,7 +156,7 @@ def turn_robot(distance, max_speed, acceleration):
     ref_distance = 0.0
     current_speed = 0.0
     ref_speed = 0.0
-    pid_pos = PID (Kp = 2.0, Ki = 0.3 , Kd = 0.2 , Imax=0.5, Imin=-0.5)
+    pid_pos = PID (Kp = 1.0, Ki = 0.3 , Kd = 0.2 , Imax=0.6, Imin=-0.6)
     
     init=0
 
@@ -169,7 +170,7 @@ def turn_robot(distance, max_speed, acceleration):
                 init=1
                 (roll, pitch, yaw_start) = euler_from_quaternion (rot)
             (roll, pitch, yaw) =  euler_from_quaternion(rot)
-            dist=yaw-yaw_start
+            dist=abs(shortest_angular_distance(yaw_start,yaw) )
             error_pos=ref_distance-dist
             control_pos = pid_pos.update(error_pos,(1.0 / hz))
 
