@@ -35,7 +35,7 @@ class PID:
 
 
 def move_robot(distance, max_speed, acceleration):
-    global ctrl 
+    global ctrl
     rospy.init_node('my_robot_controller', anonymous=True)
     sub = tf.TransformListener()
     pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
@@ -74,7 +74,7 @@ def move_robot(distance, max_speed, acceleration):
     current_speed = 0.0
     ref_speed = 0.0
     pid_th = PID (Kp = 2.0, Ki = 0.02 , Kd = 0.5)
-    pid_pos = PID (Kp = 2.0, Ki = 0.3 , Kd = 0.2 , Imax=0.5, Imin=-0.5)
+    pid_pos = PID (Kp = 1.5, Ki = 0.3 , Kd = 0.2 , Imax=0.5, Imin=-0.5)
     
     init=0
 
@@ -118,7 +118,7 @@ def move_robot(distance, max_speed, acceleration):
     #print("Robot stopped.")
 
 def turn_robot(distance, max_speed, acceleration):
-    global ctrl 
+    global ctrl
     rospy.init_node('my_robot_controller', anonymous=True)
     sub = tf.TransformListener()
     pub = rospy.Publisher('/diffbot/mobile_base_controller/cmd_vel', geometry_msgs.msg.Twist, queue_size=10)
@@ -226,7 +226,7 @@ if __name__ == '__main__':
         acceleration = 0.6  # Hızlanma (eşit ivme)
         max_th_speed = 4.0
         acc_th = 3.0
-        move_robot(distance, max_speed, acceleration)
         turn_robot(theta,max_th_speed,acc_th)
+        move_robot(distance, max_speed, acceleration)
     except KeyboardInterrupt:
         pass
